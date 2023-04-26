@@ -5,18 +5,18 @@
         </div>
         <!-- 搜索作品名字模态框-->
         <el-dialog :visible.sync="showBatchDialog" :close-on-click-modal="false" :before-close="closeDialog"
-            class="batch-dialog" :width="modelW">
+            class="custom-dialog batch-dialog" :width="modelW">
             <div slot="title">
-                <span class="fs18">请输入{{title}} </span>
-                <span class="fs12 color-deep">({{title}}通过回车或者逗号分割)</span>
+                <span class="batch-title">请输入{{title}} </span>
+                <span class="tips">({{title}}通过回车或者逗号分割)</span>
             </div>
             <div class="theme-codes-area">
                 <el-input v-model="themeCodes" type="textarea" />
             </div>
             <el-row class="mt10">
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                    <span class="limit-show">{{ arrLength }} / {{ maxNum }}</span>
-                    <span v-show="isShowWarn" class="tip-show">(输入条数不能超过200条)</span>
+                    <span class="limit-num">{{ arrLength }} / {{ maxNum }}</span>
+                    <span v-show="isShowWarn" class="tips">(输入条数不能超过200条)</span>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="text-right">
                     <el-button size="small" @click="closeDialog">取消</el-button>
@@ -32,8 +32,8 @@
  * 使用示例 <batch-name-info v-model="searchForm.artworkNames" title="作品名称" @change="openEnterEvent"/>
  * 引入   import batchNameInfo from "@/components/batchNameInfo";
  * */
+import { isStrEmpty, isArrayEmpty } from "./utils/validate";
 
-import { isStrEmpty, isArrayEmpty } from './../utils';
 export default {
     name: "batchNameInfo",
     props: {
@@ -164,8 +164,36 @@ export default {
     }
 };
 </script>
-
-<style>
+<style lang="scss">
+.batch-dialog {
+    .text-right {
+        text-align: right;
+    }
+    .mt10 {
+        margin-top: 10px;
+    }
+    .tips {
+        font-size: 12px;
+        color: #9f1804;
+    }
+    .batch-title {
+        font-size: 18px;
+    }
+    .theme-codes-area {
+        .el-textarea {
+            .el-textarea__inner {
+                height: 300px;
+                min-height: 100px !important;
+                max-height: 500px;
+            }
+        }
+    }
+    .limit-num {
+        line-height: 36px;
+    }
+}
+</style>
+<style scoped lang="scss">
 .inner-span-names {
     display: block;
     width: 100%;
@@ -184,23 +212,5 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
-}
-.title-name {
-    font-size: 18px;
-}
-.tip-show {
-    font-size: 12px;
-    color: #9f1804;
-}
-.theme-codes-area .el-textarea .el-textarea__inner {
-    height: 300px;
-    min-height: 100px !important;
-    max-height: 500px;
-}
-.limit-show {
-    line-height: 36px;
-}
-.text-right {
-    text-align: right;
 }
 </style>
